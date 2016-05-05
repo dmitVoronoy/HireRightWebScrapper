@@ -6,8 +6,10 @@ import ru.voronoy.webscrapper.Parser;
 import ru.voronoy.webscrapper.Routines;
 
 import java.io.FileReader;
+import java.io.Reader;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class ParseTest {
     @Test
@@ -16,6 +18,26 @@ public class ParseTest {
         String htmlText = "<html><body>" + text + "</body></html>";
         Document document = Parser.parse(htmlText);
         assertEquals(text, document.getFullText());
+    }
+
+    @Test
+    public void passNullToParserTest1() throws Exception {
+        try {
+            Parser.parse((String)null);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void passNullToParserTest2() throws Exception {
+        try {
+            Parser.parse((Reader)null);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail();
     }
 
     @Test

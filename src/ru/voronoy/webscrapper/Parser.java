@@ -11,14 +11,22 @@ public class Parser {
     private static HTMLEditorKit.Parser parser = new ParserDelegator();
 
     public static Document parse(Reader reader) throws IOException {
+        checkArgument(reader);
         Callback callback = new Callback();
         parser.parse(reader, callback, true);
         return callback.getDocument();
     }
 
     public static Document parse(String text) throws IOException {
+        checkArgument(text);
         Reader reader = new StringReader(text);
         return parse(reader);
+    }
+
+    private static void checkArgument(Object arg) {
+        if (arg == null) {
+            throw new IllegalArgumentException("Argument is null!");
+        }
     }
 
     private static class Callback extends HTMLEditorKit.ParserCallback {
