@@ -41,15 +41,8 @@ public class ParseTest {
     }
 
     @Test
-    public void parseBigFile() throws Exception {
-        FileReader reader = new FileReader("assets/cnnTest.html");
-        Document document = Parser.parse(reader);
-        document.getFullText();
-    }
-
-    @Test
     public void countWordTest() throws Exception {
-        FileReader reader = new FileReader("assets/cnnTest2.html");
+        FileReader reader = new FileReader("assets/cnnTest.html");
         Document document = Parser.parse(reader);
         assertEquals(3, Routines.countWord(document, "testword"));
     }
@@ -72,5 +65,13 @@ public class ParseTest {
             return;
         }
         fail();
+    }
+
+    @Test
+    public void countWholeAmountOfSymbols() throws Exception{
+        String text = "Body text";
+        String htmlText = "<html><head>" + "Head text" + " </head><body>" + text + "</body></html>";
+        Document document = Parser.parse(htmlText);
+        assertEquals(16, document.getCharactersCount());
     }
 }

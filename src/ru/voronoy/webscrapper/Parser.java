@@ -29,11 +29,11 @@ public class Parser {
         @Override
         public void handleText(char[] data, int pos) {
             super.handleText(data, pos);
-            this.document.addEntry(data);
+            document.addEntry(data);
         }
 
         public Document getDocument() {
-            return this.document;
+            return document;
         }
     }
 }
