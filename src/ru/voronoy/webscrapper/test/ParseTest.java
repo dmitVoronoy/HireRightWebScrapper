@@ -53,4 +53,24 @@ public class ParseTest {
         Document document = Parser.parse(reader);
         assertEquals(3, Routines.countWord(document, "testword"));
     }
+
+    @Test
+    public void passNullToCountRoutinesTest1() {
+        try {
+            Routines.countWord(null, "testword");
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail();
+    }
+
+    @Test
+    public void passNullToCountRoutinesTest2() {
+        try {
+            Routines.countWord(new Document(), null);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        fail();
+    }
 }
