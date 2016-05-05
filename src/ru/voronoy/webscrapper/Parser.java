@@ -1,6 +1,4 @@
-package ru.voronoy.webscrapper.parser;
-
-import ru.voronoy.webscrapper.Document;
+package ru.voronoy.webscrapper;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
@@ -24,16 +22,16 @@ public class Parser {
     }
 
     private static class Callback extends HTMLEditorKit.ParserCallback {
-        private StringBuilder fullText = new StringBuilder();
+        private Document document = new Document();
 
         @Override
         public void handleText(char[] data, int pos) {
             super.handleText(data, pos);
-            this.fullText.append(data);
+            this.document.addEntry(data);
         }
 
         public Document getDocument() {
-            return new Document(this.fullText.toString());
+            return this.document;
         }
     }
 }

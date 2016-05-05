@@ -2,7 +2,8 @@ package ru.voronoy.webscrapper.test;
 
 import org.junit.Test;
 import ru.voronoy.webscrapper.Document;
-import ru.voronoy.webscrapper.parser.Parser;
+import ru.voronoy.webscrapper.Parser;
+import ru.voronoy.webscrapper.Routines;
 
 import java.io.FileReader;
 
@@ -22,5 +23,12 @@ public class ParseTest {
         FileReader reader = new FileReader("assets/cnnTest.html");
         Document document = Parser.parse(reader);
         document.getFullText();
+    }
+
+    @Test
+    public void countWordTest() throws Exception {
+        FileReader reader = new FileReader("assets/cnnTest2.html");
+        Document document = Parser.parse(reader);
+        assertEquals(3, Routines.countWord(document, "testword"));
     }
 }
