@@ -7,6 +7,8 @@ import ru.voronoy.webscrapper.Routines;
 
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -68,10 +70,17 @@ public class ParseTest {
     }
 
     @Test
-    public void countWholeAmountOfSymbols() throws Exception{
+    public void countWholeAmountOfSymbols() throws Exception {
         String text = "Body text";
         String htmlText = "<html><head>" + "Head text" + " </head><body>" + text + "</body></html>";
         Document document = Parser.parse(htmlText);
         assertEquals(16, document.getCharactersCount());
+    }
+
+    @Test
+    public void matchSentence() {
+        Pattern pattern = Pattern.compile("^[A-Za-z,;'\"\\s]+[.?!]$");
+        Matcher matcher = pattern.matcher("BlaBla bla.");
+        matcher.matches();
     }
 }
