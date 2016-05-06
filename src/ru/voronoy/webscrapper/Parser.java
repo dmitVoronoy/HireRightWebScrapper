@@ -29,7 +29,7 @@ public class Parser {
         @Override
         public void handleText(char[] data, int pos) {
             super.handleText(data, pos);
-            document.addEntry(data);
+            document.addSentences(Routines.prepareSentences(new String(data)));
         }
 
         public Document getDocument() {

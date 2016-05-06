@@ -7,13 +7,14 @@ import ru.voronoy.webscrapper.Routines;
 
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class ParseTest {
+public class Tests {
     @Test
     public void getBodyTextTest() throws Exception {
         String text = "Body text";
@@ -78,9 +79,43 @@ public class ParseTest {
     }
 
     @Test
-    public void matchSentence() {
-        Pattern pattern = Pattern.compile("^[A-Za-z,;'\"\\s]+[.?!]$");
-        Matcher matcher = pattern.matcher("BlaBla bla.");
-        matcher.matches();
+    public void prepareOneSentenceTest() {
+        String text = "Some text";
+        List<String> sentences = Routines.prepareSentences(text);
+        assertEquals(1, sentences.size());
+        assertEquals(text, sentences.get(0));
+    }
+
+    @Test
+    public void prepareTwoSentencesWithDotTest() {
+        String sentence1 = "Some text";
+        String sentence2 = "The rest part";
+        String text = sentence1 + ". " + sentence2;
+        List<String> sentences = Routines.prepareSentences(text);
+        assertEquals(2, sentences.size());
+        assertEquals(sentence1, sentences.get(0));
+        assertEquals(sentence2, sentences.get(1));
+    }
+
+    @Test
+    public void prepareTwoSentencesWithExclamationTest() {
+        String sentence1 = "Some text";
+        String sentence2 = "The rest part";
+        String text = sentence1 + "! " + sentence2;
+        List<String> sentences = Routines.prepareSentences(text);
+        assertEquals(2, sentences.size());
+        assertEquals(sentence1, sentences.get(0));
+        assertEquals(sentence2, sentences.get(1));
+    }
+
+    @Test
+    public void prepareTwoSentencesWithQuestionTest() {
+        String sentence1 = "Some text";
+        String sentence2 = "The rest part";
+        String text = sentence1 + "? " + sentence2;
+        List<String> sentences = Routines.prepareSentences(text);
+        assertEquals(2, sentences.size());
+        assertEquals(sentence1, sentences.get(0));
+        assertEquals(sentence2, sentences.get(1));
     }
 }
