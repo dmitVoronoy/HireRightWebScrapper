@@ -1,12 +1,12 @@
-package ru.voronoy.webscrapper.test;
+package ru.voronoy.webscraper.test;
 
 import org.junit.Test;
-import ru.voronoy.webscrapper.Document;
-import ru.voronoy.webscrapper.Parser;
-import ru.voronoy.webscrapper.Routines;
+import ru.voronoy.webscraper.Document;
+import ru.voronoy.webscraper.Parser;
+import ru.voronoy.webscraper.Routines;
+import ru.voronoy.webscraper.WordCounter;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,14 +20,14 @@ public class Tests {
     public void getBodyTextTest() throws Exception {
         String text = "Body text";
         String htmlText = "<html><body>" + text + "</body></html>";
-        Document document = Parser.parse(htmlText);
+        Document document = new Parser().parse(htmlText);
         assertEquals(text, document.getFullText());
     }
 
     @Test
     public void passNullToParserTest1() throws Exception {
         try {
-            Parser.parse((String)null);
+            new Parser().parse((String)null);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -37,7 +37,7 @@ public class Tests {
     @Test
     public void passNullToParserTest2() throws Exception {
         try {
-            Parser.parse((Reader)null);
+            new Parser().parse((Reader)null);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -47,14 +47,15 @@ public class Tests {
     @Test
     public void countWordTest() throws Exception {
         FileReader reader = new FileReader("assets/cnnTest.html");
-        Document document = Parser.parse(reader);
-        assertEquals(3, Routines.countWord(document, "testword"));
+        Document document = new Parser().parse(reader);
+        WordCounter counter = new WordCounter(document);
+        assertEquals(3, counter.countWord("testword"));
     }
 
     @Test
-    public void passNullToCountRoutinesTest1() {
+    public void passNullToCountWordsTest() {
         try {
-            Routines.countWord(null, "testword");
+            new WordCounter(new Document()).countWord(null);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -62,9 +63,9 @@ public class Tests {
     }
 
     @Test
-    public void passNullToCountRoutinesTest2() {
+    public void passNullToWordCountConstructorTest() {
         try {
-            Routines.countWord(new Document(), null);
+            new WordCounter(null);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -75,7 +76,7 @@ public class Tests {
     public void countWholeAmountOfSymbols() throws Exception {
         String text = "Body text";
         String htmlText = "<html><head>" + "Head text" + " </head><body>" + text + "</body></html>";
-        Document document = Parser.parse(htmlText);
+        Document document = new Parser().parse(htmlText);
         assertEquals(16, document.getCharactersCount());
     }
 
@@ -121,29 +122,6 @@ public class Tests {
     }
 
     @Test
-    public void getWebPageTest() throws Exception {
-//        InputStream is = null;
-//        String line;
-//        File file = new File("D:/temp/text.html");
-//        if (file.exists())
-//            file.delete();
-//        file.createNewFile();
-//        FileWriter writer = new FileWriter(file, true);
-//        try {
-//            URL url = new URL("https://habrahabr.ru/");
-//            is = url.openStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-//
-//            while ((line = br.readLine()) != null) {
-//                writer.append(line);
-//            }
-//        } finally {
-//            if (is != null) is.close();
-//            if (writer != null) writer.close();
-//        }
-    }
-
-    @Test
     public void fillUrlsListTest() throws Exception {
         String[] urlStrings = new String[] {"url1", "url2", "url3"};
         String separator = System.getProperty("line.separator");
@@ -163,7 +141,7 @@ public class Tests {
             });
         }
         List<String> urls = new ArrayList<>();
-        Routines.fillUrlsFromFile(urls, file.getAbsolutePath());
+        Routines.fillUrlsFromFile(urls, file);
         file.delete();
         assertArrayEquals(urlStrings, urls.toArray());
     }

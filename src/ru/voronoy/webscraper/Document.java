@@ -1,4 +1,4 @@
-package ru.voronoy.webscrapper;
+package ru.voronoy.webscraper;
 
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class Document {
         return optional.get();
     }
 
-    public List<String> getTextEntries() {
+    public List<String> getSentences() {
         return sentences;
     }
 
