@@ -66,8 +66,8 @@ public class Main {
                     }
                     if (extractSentences) {
                         Arrays.stream(keywords).forEach(kw -> {
-                            String sentence = counter.getSentenceWithWord(kw);
-                            printer.collectSentence(u, kw, sentence);
+                            List<String> sentences = counter.getSentencesWithWord(kw);
+                            printer.collectSentences(u, kw, sentences);
                         });
                     }
                     if (charactersCount) {
