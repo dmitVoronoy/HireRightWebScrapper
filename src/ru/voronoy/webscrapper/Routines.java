@@ -1,5 +1,6 @@
 package ru.voronoy.webscrapper;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,10 +25,10 @@ public class Routines {
         return count[0];
     }
 
-    public static void checkArgument(Object arg) {
-        if (arg == null) {
-            throw new IllegalArgumentException("Argument is null!");
-        }
+    public static void checkArgument(Object... args) {
+        Arrays.stream(args).forEach(s -> {
+            if (s == null) throw new IllegalArgumentException("Argument is null!");
+        });
     }
 
     public static List<String> prepareSentences(String text) {
@@ -36,5 +37,18 @@ public class Routines {
                 .stream()
                 .map(s -> s.trim())
                 .collect(Collectors.toList());
+    }
+
+    public static void fillUrlsFromFile(List<String> urls, String path) throws FileNotFoundException {
+        checkArgument(urls, path);
+        File file = new File(path);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                urls.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

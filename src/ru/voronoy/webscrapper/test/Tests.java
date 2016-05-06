@@ -5,12 +5,13 @@ import ru.voronoy.webscrapper.Document;
 import ru.voronoy.webscrapper.Parser;
 import ru.voronoy.webscrapper.Routines;
 
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -117,5 +118,53 @@ public class Tests {
         assertEquals(2, sentences.size());
         assertEquals(sentence1, sentences.get(0));
         assertEquals(sentence2, sentences.get(1));
+    }
+
+    @Test
+    public void getWebPageTest() throws Exception {
+//        InputStream is = null;
+//        String line;
+//        File file = new File("D:/temp/text.html");
+//        if (file.exists())
+//            file.delete();
+//        file.createNewFile();
+//        FileWriter writer = new FileWriter(file, true);
+//        try {
+//            URL url = new URL("https://habrahabr.ru/");
+//            is = url.openStream();
+//            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+//
+//            while ((line = br.readLine()) != null) {
+//                writer.append(line);
+//            }
+//        } finally {
+//            if (is != null) is.close();
+//            if (writer != null) writer.close();
+//        }
+    }
+
+    @Test
+    public void fillUrlsListTest() throws Exception {
+        String[] urlStrings = new String[] {"url1", "url2", "url3"};
+        String separator = System.getProperty("line.separator");
+        File file = new File(System.getProperty("user.home"), "fillUrlTest");
+        if (file.exists())
+            file.delete();
+        file.createNewFile();
+        try (FileWriter writer = new FileWriter(file, true)){
+            Arrays.stream(urlStrings).forEach(s -> {
+                try {
+                    writer.append(s);
+                    writer.append(separator);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            });
+        }
+        List<String> urls = new ArrayList<>();
+        Routines.fillUrlsFromFile(urls, file.getAbsolutePath());
+        file.delete();
+        assertArrayEquals(urlStrings, urls.toArray());
     }
 }
