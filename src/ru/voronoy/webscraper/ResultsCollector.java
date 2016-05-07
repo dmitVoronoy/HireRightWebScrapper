@@ -35,12 +35,14 @@ class ResultsCollector {
     }
 
     public void collectSentences(URL u, String kw, List<String> sentences) {
-        String strUrl = u.toString();
-        String strSentences = sentences.stream()
-                .map(s -> "\"" + s + "\"")
-                .reduce((s1, s2) -> s1 + ", " + s2)
-                .orElse("");
-        print(String.format("The word %s occurs in sentences %s on page %s", kw, strSentences, strUrl));
+        if (sentences != null) {
+            String strUrl = u.toString();
+            String strSentences = sentences.stream()
+                    .map(s -> "\"" + s + "\"")
+                    .reduce((s1, s2) -> s1 + ", " + s2)
+                    .orElse("");
+            print(String.format("The word %s occurs in sentences %s on page %s", kw, strSentences, strUrl));
+        }
     }
 
     public void collectCharactersCount(URL u, long charactersCount) {

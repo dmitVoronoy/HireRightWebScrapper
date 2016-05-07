@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="scraper">
+    <output-path>$USER_HOME$/jars</output-path>
+    <root id="archive" name="scraper.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$USER_HOME$/jars/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="HireRightWebScraper" />
+      <element id="library" level="module" name="JUnit4" module-name="HireRightWebScraper" />
+    </root>
+  </artifact>
+</component>

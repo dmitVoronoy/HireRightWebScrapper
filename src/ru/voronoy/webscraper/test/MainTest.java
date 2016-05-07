@@ -54,6 +54,15 @@ public class MainTest {
     }
 
     @Test
+    public void nonExistentWordTest() {
+        Main.main(new String[]{"https://yandex.com", "blabal", "-w", "-c", "-e"});
+        assertEquals("The word blabal occurs on page https://yandex.com 0 times" + LINE_SEPARATOR
+                + "The page https://yandex.com contains 1533 characters" + LINE_SEPARATOR
+                + "The page https://yandex.com has the 0 words occurrences in total" + LINE_SEPARATOR
+                + "The overall amount of received characters is 1533" + LINE_SEPARATOR, testOut.toString());
+    }
+
+    @Test
     public void oneWordOccurrenceTest() {
         Main.main(new String[]{"https://yandex.com", "yandex", "-w"});
         assertEquals("The word yandex occurs on page https://yandex.com 4 times" + LINE_SEPARATOR
@@ -168,6 +177,12 @@ public class MainTest {
         Main.main(new String[]{"https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html", "operation", "-w", "-v"});
         assertTrue(testOut.toString().contains("Overall time spent"));
     }
+
+//    @Test
+//    public void newTest() {
+//        Main.main(new String[]{"http://www.cnn.com", "Greece,default", "-v", "-w", "-c", "-e"});
+//        "d".toLowerCase();
+//    }
 
     @After
     public void tearDown() {
