@@ -11,10 +11,10 @@ public class Printer implements IPrinter {
     Map<String, Long> charactersCountMap = new HashMap<>();
 
     private static String occurrenceTemplate = "The word %s occurs on page %s %d times";
-    private static String sentencesTemplate = "The word %s occurs in sentences %s";
-    private static String charactersCountTemplate = "The portal %s contains %d characters";
+    private static String sentencesTemplate = "The word %s occurs in sentences %s on page %s";
+    private static String charactersCountTemplate = "The page %s contains %d characters";
 
-    private static String totalWordsCountTemplate = "The portal %s has the %d words occurrences in total";
+    private static String totalWordsCountTemplate = "The page %s has the %d words occurrences in total";
     private static String totalCharactersCountTemplate = "The overall amount of received characters is %d";
 
     @Override
@@ -23,18 +23,20 @@ public class Printer implements IPrinter {
         print(String.format(occurrenceTemplate, word, strUrl, count));
         Integer c = infoMap.get(strUrl);
         if (c == null)
-            infoMap.put(strUrl, count);
+            c = count;
         else
             c += count;
+        infoMap.put(strUrl, c);
     }
 
     @Override
     public void collectSentences(URL u, String kw, List<String> sentences) {
         String strUrl = u.toString();
         String strSentences = sentences.stream()
-                .reduce((s1, s2) -> "\"" + s1 + "\", \"" + s2 + "\"")
+                .map(s -> "\"" + s + "\"")
+                .reduce((s1, s2) -> s1 + ", " + s2)
                 .get();
-        print(String.format(sentencesTemplate, strUrl, strSentences));
+        print(String.format(sentencesTemplate, kw, strSentences, strUrl));
     }
 
     @Override
