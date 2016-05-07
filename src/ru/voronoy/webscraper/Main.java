@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,30 +55,34 @@ public class Main {
         }
         String[] keywords = args[1].split(",");
         parseDashArgs(args);
-        Printer printer = new Printer();
+        ResultsCollector resultsCollector = new ResultsCollector();
         urls.stream().forEach(u -> {
             Scraper scraper = new Scraper(u);
             try {
+                startPageScraping(u, resultsCollector);
                 String content = scraper.getPageContent();
+                endPageScraping(u, resultsCollector);
                 if (!content.isEmpty()) {
                     Parser parser = new Parser();
+                    startPageProcessing(u, resultsCollector);
                     Document document = parser.parse(content);
                     WordCounter counter = new WordCounter(document);
                     if (wordsOccurence) {
                         Arrays.stream(keywords).forEach(kw -> {
                             int count = counter.countWord(kw);
-                            printer.collectWordCount(u, kw, count);
+                            resultsCollector.collectWordCount(u, kw, count);
                         });
                     }
                     if (extractSentences) {
                         Arrays.stream(keywords).forEach(kw -> {
                             List<String> sentences = counter.getSentencesWithWord(kw);
-                            printer.collectSentences(u, kw, sentences);
+                            resultsCollector.collectSentences(u, kw, sentences);
                         });
                     }
                     if (charactersCount) {
-                        printer.collectCharactersCount(u, document.getCharactersCount());
+                        resultsCollector.collectCharactersCount(u, document.getCharactersCount());
                     }
+                    endPageProcessing(u, resultsCollector);
                 } else {
                     System.out.println(String.format(CANNOT_GET_SITE_CONTENT, u));
                     return;
@@ -87,7 +92,31 @@ public class Main {
                 System.out.println(String.format(CANNOT_GET_SITE_CONTENT, u));
             }
         });
-        printer.printTotalResult();
+        resultsCollector.printTotalResult();
+    }
+
+    private static void startPageScraping(URL u, ResultsCollector resultsCollector) {
+        if (verbosity) {
+            resultsCollector.collectScrappingStart(u.toString(), Instant.now());
+        }
+    }
+
+    private static void endPageScraping(URL u, ResultsCollector resultsCollector) {
+        if (verbosity) {
+            resultsCollector.collectScrappingEnd(u.toString(), Instant.now());
+        }
+    }
+
+    private static void startPageProcessing(URL u, ResultsCollector resultsCollector) {
+        if (verbosity) {
+            resultsCollector.collectProcessingStart(u.toString(), Instant.now());
+        }
+    }
+
+    private static void endPageProcessing(URL u, ResultsCollector resultsCollector) {
+        if (verbosity) {
+            resultsCollector.collectProcessingEnd(u.toString(), Instant.now());
+        }
     }
 
     private static void parseDashArgs(String[] args) {

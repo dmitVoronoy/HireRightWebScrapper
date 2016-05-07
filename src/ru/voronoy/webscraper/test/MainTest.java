@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MainTest {
     private final ByteArrayOutputStream testOut = new ByteArrayOutputStream();
@@ -160,6 +161,12 @@ public class MainTest {
                 + "The page https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html has the 38" +
                 " words occurrences in total" + LINE_SEPARATOR
                 + "The overall amount of received characters is 14246" + LINE_SEPARATOR, testOut.toString());
+    }
+
+    @Test
+    public void verbosityTest() {
+        Main.main(new String[]{"https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html", "operation", "-w", "-v"});
+        assertTrue(testOut.toString().contains("Overall time spent"));
     }
 
     @After
