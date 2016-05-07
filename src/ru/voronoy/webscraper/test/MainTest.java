@@ -178,12 +178,6 @@ public class MainTest {
         assertTrue(testOut.toString().contains("Overall time spent"));
     }
 
-//    @Test
-//    public void newTest() {
-//        Main.main(new String[]{"http://www.cnn.com", "Greece,default", "-v", "-w", "-c", "-e"});
-//        "d".toLowerCase();
-//    }
-
     @After
     public void tearDown() {
         System.setOut(null);

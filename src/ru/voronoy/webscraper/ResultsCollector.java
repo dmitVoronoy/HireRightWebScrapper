@@ -23,6 +23,9 @@ class ResultsCollector {
     private static final String timeSpentOnPageScraping = "Time spent on %s page scraping = %s msec";
     private static final String timeSpentOnPageProcessing = "Time spent on %s page processing = %s msec";
 
+    private static final String stoppedScrapingTemplate = "Page %s scraping hasn't finished because of some errors";
+    private static final String stoppedProcessingTemplate = "Page %s processing hasn't finished because of some errors";
+
     public void collectWordCount(URL u, String word, int count) {
         String strUrl = u.toString();
         print(String.format("The word %s occurs on page %s %d times", word, strUrl, count));
@@ -63,20 +66,32 @@ class ResultsCollector {
                 .ifPresent(l -> print(String.format(totalCharactersCountTemplate, l)));
         long[] overallScraping = new long[] {0L};
         pageScraping.forEach((k, v) -> {
-            long between = ChronoUnit.MILLIS.between(v.start, v.end);
+            long between = formatPeriod(k, v, stoppedScrapingTemplate);
             overallScraping[0] += between;
-            print(String.format(timeSpentOnPageScraping, k, Long.toString(between)));
+            if (between > 0)
+                print(String.format(timeSpentOnPageScraping, k, Long.toString(between)));
         });
         long[] overallProcessing = new long[] {0L};
         pageProcessing.forEach((k,v) -> {
-            long between = ChronoUnit.MILLIS.between(v.start, v.end);
+            long between = formatPeriod(k, v, stoppedProcessingTemplate);
             overallProcessing[0] += between;
-            print(String.format(timeSpentOnPageProcessing, k, Long.toString(between)));
+            if (between > 0)
+                print(String.format(timeSpentOnPageProcessing, k, Long.toString(between)));
         });
         if (overallScraping[0] != 0L)
             print(String.format("Overall time spent on scraping = %s msec", overallScraping[0]));
         if (overallProcessing[0] != 0L)
             print(String.format("Overall time spent on processing = %s msec", overallProcessing[0]));
+    }
+
+    private long formatPeriod(String url, Period period, String messageTemplate) {
+        Instant start = period.start;
+        Instant end = period.end;
+        if (start == null || end == null) {
+            print(String.format(messageTemplate, url));
+            return 0L;
+        }
+        return ChronoUnit.MILLIS.between(start, end);
     }
 
     public void collectScrappingStart(String page, Instant time) {
