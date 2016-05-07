@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ResultsCollector implements IPrinter {
+public class ResultsCollector {
 
     private Map<String, Integer> infoMap = new HashMap<>();
     private Map<String, Long> charactersCountMap = new HashMap<>();
@@ -26,7 +26,6 @@ public class ResultsCollector implements IPrinter {
     private static String overallTimeSpentOnScraping = "Overall time spent on scraping = %s msec";
     private static String overallTimeSpentOnProcessing = "Overall time spent on processing = %s msec";
 
-    @Override
     public void collectWordCount(URL u, String word, int count) {
         String strUrl = u.toString();
         print(String.format(occurrenceTemplate, word, strUrl, count));
@@ -38,7 +37,6 @@ public class ResultsCollector implements IPrinter {
         infoMap.put(strUrl, c);
     }
 
-    @Override
     public void collectSentences(URL u, String kw, List<String> sentences) {
         String strUrl = u.toString();
         String strSentences = sentences.stream()
@@ -48,19 +46,16 @@ public class ResultsCollector implements IPrinter {
         print(String.format(sentencesTemplate, kw, strSentences, strUrl));
     }
 
-    @Override
     public void collectCharactersCount(URL u, long charactersCount) {
         String strUrl = u.toString();
         print(String.format(charactersCountTemplate, strUrl, charactersCount));
         charactersCountMap.put(strUrl, charactersCount);
     }
 
-    @Override
     public void print(String s) {
         System.out.println(s);
     }
 
-    @Override
     public void printTotalResult() {
         infoMap.forEach((k,v) -> {
             print(String.format(totalWordsCountTemplate, k, v));
