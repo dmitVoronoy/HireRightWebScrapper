@@ -12,10 +12,10 @@ public class Printer implements IPrinter {
 
     private static String occurrenceTemplate = "The word %s occurs on page %s %d times";
     private static String sentencesTemplate = "The word %s occurs in sentences %s";
-    private static String charactersCountTemplate = "The portal %s contains %n characters";
+    private static String charactersCountTemplate = "The portal %s contains %d characters";
 
     private static String totalWordsCountTemplate = "The portal %s has the %d words occurrences in total";
-    private static String totalCharactersCountTemplate = "The over amount of received characters is %n";
+    private static String totalCharactersCountTemplate = "The overall amount of received characters is %d";
 
     @Override
     public void collectWordCount(URL u, String word, int count) {
@@ -54,7 +54,11 @@ public class Printer implements IPrinter {
         infoMap.entrySet().forEach(e -> {
             print(String.format(totalWordsCountTemplate, e.getKey(), e.getValue()));
         });
-        Long totalCharacters = charactersCountMap.values().stream().reduce((l1, l2) -> l1 + l2).get();
-        print(String.format(totalCharactersCountTemplate, totalCharacters));
+        charactersCountMap.values()
+                .stream()
+                .reduce((l1, l2) -> l1 + l2)
+                .ifPresent(l -> {
+                    print(String.format(totalCharactersCountTemplate, l));
+                });
     }
 }

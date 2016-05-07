@@ -6,14 +6,15 @@ import ru.voronoy.webscraper.Parser;
 import ru.voronoy.webscraper.Routines;
 import ru.voronoy.webscraper.WordCounter;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class Tests {
     @Test
@@ -25,19 +26,9 @@ public class Tests {
     }
 
     @Test
-    public void passNullToParserTest1() throws Exception {
+    public void passNullToParserTest() throws Exception {
         try {
-            new Parser().parse((String)null);
-        } catch (IllegalArgumentException e) {
-            return;
-        }
-        fail();
-    }
-
-    @Test
-    public void passNullToParserTest2() throws Exception {
-        try {
-            new Parser().parse((Reader)null);
+            new Parser().parse(null);
         } catch (IllegalArgumentException e) {
             return;
         }
@@ -47,9 +38,17 @@ public class Tests {
     @Test
     public void countWordTest() throws Exception {
         FileReader reader = new FileReader("assets/cnnTest.html");
-        Document document = new Parser().parse(reader);
+        char[] buffer = new char[1024];
+        StringBuilder builder = new StringBuilder();
+        while (true) {
+            int read = reader.read(buffer, 0, buffer.length);
+            if (read < 0)
+                break;
+            builder.append(buffer, 0, read);
+        }
+        Document document = new Parser().parse(builder.toString());
         WordCounter counter = new WordCounter(document);
-        assertEquals(3, counter.countWord("testword"));
+        assertEquals(4, counter.countWord("testword"));
     }
 
     @Test

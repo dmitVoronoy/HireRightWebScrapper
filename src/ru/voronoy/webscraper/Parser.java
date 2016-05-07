@@ -10,17 +10,12 @@ public class Parser {
 
     private static HTMLEditorKit.Parser parser = new ParserDelegator();
 
-    public Document parse(Reader reader) throws IOException {
-        Routines.checkArgument(reader);
-        Callback callback = new Callback();
-        parser.parse(reader, callback, true);
-        return callback.getDocument();
-    }
-
     public Document parse(String text) throws IOException {
         Routines.checkArgument(text);
         Reader reader = new StringReader(text);
-        return parse(reader);
+        Callback callback = new Callback();
+        parser.parse(reader, callback, true);
+        return callback.getDocument();
     }
 
     private static class Callback extends HTMLEditorKit.ParserCallback {

@@ -1,9 +1,7 @@
 package ru.voronoy.webscraper;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
 
 public class Scraper {
@@ -15,12 +13,17 @@ public class Scraper {
         this.url = url;
     }
 
-    public Reader getPageContentReader() {
-        try (InputStream is = url.openStream()) {
-            return new InputStreamReader(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    public String getPageContent() throws IOException {
+        StringBuilder builder = new StringBuilder();
+        try (InputStreamReader reader = new InputStreamReader(url.openStream())) {
+            char[] buffer = new char[1024];
+            while (true) {
+                int read = reader.read(buffer, 0, buffer.length);
+                if (read < 0)
+                    break;
+                builder.append(buffer, 0, read);
+            }
         }
+        return builder.toString();
     }
 }
