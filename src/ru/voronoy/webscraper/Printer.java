@@ -15,6 +15,7 @@ public class Printer implements IPrinter {
     private static String charactersCountTemplate = "The portal %s contains %n characters";
 
     private static String totalWordsCountTemplate = "The portal %s has the %d words occurrences in total";
+    private static String totalCharactersCountTemplate = "The over amount of received characters is %n";
 
     @Override
     public void collectWordCount(URL u, String word, int count) {
@@ -53,5 +54,7 @@ public class Printer implements IPrinter {
         infoMap.entrySet().forEach(e -> {
             print(String.format(totalWordsCountTemplate, e.getKey(), e.getValue()));
         });
+        Long totalCharacters = charactersCountMap.values().stream().reduce((l1, l2) -> l1 + l2).get();
+        print(String.format(totalCharactersCountTemplate, totalCharacters));
     }
 }
