@@ -87,7 +87,7 @@ public class MainTest {
     }
 
     @Test
-    public void twoWordsAndTotalCharactersAndSentecesOccurrenceTest2() {
+    public void twoWordsAndTotalCharactersAndSentencesOccurrenceTest2() {
         Main.main(new String[]{"https://docs.oracle.com/javase/tutorial/collections/streams/reduction.html",
                 "operation,value", "-w", "-c", "-e"});
         assertEquals("The word operation occurs on page https://docs.oracle.com/javase/tutorial/collections/streams" +

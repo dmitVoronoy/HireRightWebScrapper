@@ -1,7 +1,6 @@
 package ru.voronoy.webscraper;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,8 +13,8 @@ import java.util.List;
  * This is the WebScraper console application.
  * It could get the web page content, count word occurrences, total amount of characters, etc.
  * Usage: <URL|PathToUrlList> <word[,...]> [-v] [-w] [-c] [-e]
- * * <URL|PathToUrlList> - pass url or path to plain text file with the list of urls with line break delimeter;
- * * <word[,...]> - word or list of words with comma delimeter;
+ * * <URL|PathToUrlList> - pass url or path to plain text file with the list of urls with line break delimiter;
+ * * <word[,...]> - word or list of words with comma delimiter;
  * * -v - verbosity flag - prints time spent on data scraping and processing;
  * * -w - parameter to count words occurrences;
  * * -c - parameter to count overall characters amount on web page;
@@ -26,10 +25,10 @@ public class Main {
     public static final String INCORRECT_URL_OR_NONEXISTENT_FILE_PATH_MESSAGE = "Incorrect url or nonexistent file path was used!";
     public static final String IS_NOT_CORRECT_URL_MESSAGE = "%s is not correct URL!";
     public static final String ARGUMENT_IS_UNDEFINED = "%s argument is undefined";
-    public static final String CANNOT_GET_SITE_CONTENT = "There are problems with web site %s content getting. Try again later";
+    private static final String CANNOT_GET_SITE_CONTENT = "There are problems with web site %s content getting. Try again later";
 
     private static boolean verbosity;
-    private static boolean wordsOccurence;
+    private static boolean wordsOccurrence;
     private static boolean charactersCount;
     private static boolean extractSentences;
 
@@ -46,19 +45,14 @@ public class Main {
             File urlListFile = new File(args[0]);
             if (urlListFile.exists()) {
                 List<String> strUrls = new ArrayList<>();
-                try {
-                    Routines.retrieveUrlsFromFile(strUrls, urlListFile);
-                    strUrls.stream().forEach(s -> {
-                        try {
-                            urls.add(new URL(s));
-                        } catch (MalformedURLException e1) {
-                            System.out.println(String.format(IS_NOT_CORRECT_URL_MESSAGE, s));
-                        }
-                    });
-                } catch (FileNotFoundException e1) {
-                    System.out.println(INCORRECT_URL_OR_NONEXISTENT_FILE_PATH_MESSAGE);
-                    return;
-                }
+                Routines.retrieveUrlsFromFile(strUrls, urlListFile);
+                strUrls.stream().forEach(s -> {
+                    try {
+                        urls.add(new URL(s));
+                    } catch (MalformedURLException e1) {
+                        System.out.println(String.format(IS_NOT_CORRECT_URL_MESSAGE, s));
+                    }
+                });
             } else {
                 System.out.println(INCORRECT_URL_OR_NONEXISTENT_FILE_PATH_MESSAGE);
                 return;
@@ -78,7 +72,7 @@ public class Main {
                     startPageProcessing(u, resultsCollector);
                     Document document = parser.parse(content);
                     WordCounter counter = new WordCounter(document);
-                    if (wordsOccurence) {
+                    if (wordsOccurrence) {
                         Arrays.stream(keywords).forEach(kw -> {
                             int count = counter.countWord(kw);
                             resultsCollector.collectWordCount(u, kw, count);
@@ -96,7 +90,6 @@ public class Main {
                     endPageProcessing(u, resultsCollector);
                 } else {
                     System.out.println(String.format(CANNOT_GET_SITE_CONTENT, u));
-                    return;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -138,7 +131,7 @@ public class Main {
                 switch (dashArgument) {
                     case V: verbosity = true;
                             break;
-                    case W: wordsOccurence = true;
+                    case W: wordsOccurrence = true;
                             break;
                     case C: charactersCount = true;
                             break;
@@ -156,7 +149,7 @@ public class Main {
     }
 
     public static void clearCommandValues() {
-        wordsOccurence = false;
+        wordsOccurrence = false;
         charactersCount = false;
         extractSentences = false;
         verbosity = false;

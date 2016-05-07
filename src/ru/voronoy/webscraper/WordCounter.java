@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class WordCounter {
     private final Document document;
-    private Map<String, List<String>> sentencesForWords = new HashMap<>();
+    private final Map<String, List<String>> sentencesForWords = new HashMap<>();
 
     public WordCounter(Document document) {
         Routines.checkArgument(document);

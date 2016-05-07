@@ -11,7 +11,7 @@ import java.io.StringReader;
  */
 public class Parser {
 
-    private static HTMLEditorKit.Parser parser = new ParserDelegator();
+    private static final HTMLEditorKit.Parser parser = new ParserDelegator();
 
     public Document parse(String text) throws IOException {
         Routines.checkArgument(text);
@@ -22,7 +22,7 @@ public class Parser {
     }
 
     private static class Callback extends HTMLEditorKit.ParserCallback {
-        private Document document = new Document();
+        private final Document document = new Document();
 
         @Override
         public void handleText(char[] data, int pos) {
@@ -30,7 +30,7 @@ public class Parser {
             document.addSentences(Routines.prepareSentences(new String(data)));
         }
 
-        public Document getDocument() {
+        private Document getDocument() {
             return document;
         }
     }

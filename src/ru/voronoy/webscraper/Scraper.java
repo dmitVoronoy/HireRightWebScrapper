@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- * Scrappes the web page
+ * Scrapes the web page
  */
-public class Scraper {
+class Scraper {
 
     private final URL url;
 

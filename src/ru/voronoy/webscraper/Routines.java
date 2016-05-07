@@ -1,6 +1,9 @@
 package ru.voronoy.webscraper;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,11 +26,11 @@ public class Routines {
         checkArgument(text);
         return Arrays.asList(text.split("[.!?]"))
                 .stream()
-                .map(s -> s.trim())
+                .map(String::trim)
                 .collect(Collectors.toList());
     }
 
-    public static void retrieveUrlsFromFile(List<String> urls, File file) throws FileNotFoundException {
+    public static void retrieveUrlsFromFile(List<String> urls, File file) {
         checkArgument(urls, file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;

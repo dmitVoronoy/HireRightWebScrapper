@@ -10,14 +10,14 @@ import java.util.Optional;
  */
 public class Document {
 
-    private List<String> sentences = new ArrayList<>();
+    private final List<String> sentences = new ArrayList<>();
     private long charactersCount;
 
     public Document() { }
 
     public String getFullText() {
         Optional<String> optional = sentences.stream().reduce((s1, s2) -> s1 + " " + s2);
-        return optional.get();
+        return optional.orElse(null);
     }
 
     public List<String> getSentences() {
@@ -25,12 +25,10 @@ public class Document {
     }
 
     public void addSentences(List<String> sentences) {
-        sentences.stream().forEach(s -> {
-            addSentence(s);
-        });
+        sentences.stream().forEach(this::addSentence);
     }
 
-    public void addSentence(String sentence) {
+    private void addSentence(String sentence) {
             sentences.add(sentence);
             long count = sentence.chars().filter((c) -> !Character.isSpaceChar(c)).count();
             charactersCount += count;
