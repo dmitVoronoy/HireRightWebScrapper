@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Counts words for the web document
+ */
 public class WordCounter {
     private final Document document;
     private Map<String, List<String>> sentencesForWords = new HashMap<>();

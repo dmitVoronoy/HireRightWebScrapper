@@ -140,7 +140,7 @@ public class Tests {
             });
         }
         List<String> urls = new ArrayList<>();
-        Routines.fillUrlsFromFile(urls, file);
+        Routines.retrieveUrlsFromFile(urls, file);
         file.delete();
         assertArrayEquals(urlStrings, urls.toArray());
     }

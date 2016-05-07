@@ -10,6 +10,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This is the WebScraper console application.
+ * It could get the web page content, count word occurrences, total amount of characters, etc.
+ * Usage: <URL|PathToUrlList> <word[,...]> [-v] [-w] [-c] [-e]
+ * * <URL|PathToUrlList> - pass url or path to plain text file with the list of urls with line break delimeter;
+ * * <word[,...]> - word or list of words with comma delimeter;
+ * * -v - verbosity flag - prints time spent on data scraping and processing;
+ * * -w - parameter to count words occurrences;
+ * * -c - parameter to count overall characters amount on web page;
+ * * -e - parameter to extract sentences which contain words.
+ */
 public class Main {
     public static final String PROGRAM_USAGE_MESSAGE = "Program usage: java -jar scraper.jar <URL|PathToUrlList> <word[,...]> [-v] [-w] [-c] [-e]";
     public static final String INCORRECT_URL_OR_NONEXISTENT_FILE_PATH_MESSAGE = "Incorrect url or nonexistent file path was used!";
@@ -36,7 +47,7 @@ public class Main {
             if (urlListFile.exists()) {
                 List<String> strUrls = new ArrayList<>();
                 try {
-                    Routines.fillUrlsFromFile(strUrls, urlListFile);
+                    Routines.retrieveUrlsFromFile(strUrls, urlListFile);
                     strUrls.stream().forEach(s -> {
                         try {
                             urls.add(new URL(s));

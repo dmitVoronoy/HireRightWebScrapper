@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class collects and prints the results
+ */
 public class ResultsCollector {
 
     private Map<String, Integer> infoMap = new HashMap<>();

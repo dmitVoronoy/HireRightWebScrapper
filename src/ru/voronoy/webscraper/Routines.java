@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class
+ */
 public class Routines {
 
     public static void checkArgument(Object... args) {
@@ -13,6 +16,9 @@ public class Routines {
         });
     }
 
+    /**
+     * Prepare sentences to pass it to document
+     */
     public static List<String> prepareSentences(String text) {
         checkArgument(text);
         return Arrays.asList(text.split("[.!?]"))
@@ -21,7 +27,7 @@ public class Routines {
                 .collect(Collectors.toList());
     }
 
-    public static void fillUrlsFromFile(List<String> urls, File file) throws FileNotFoundException {
+    public static void retrieveUrlsFromFile(List<String> urls, File file) throws FileNotFoundException {
         checkArgument(urls, file);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;

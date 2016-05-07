@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+/**
+ * Web page parser
+ */
 public class Parser {
 
     private static HTMLEditorKit.Parser parser = new ParserDelegator();

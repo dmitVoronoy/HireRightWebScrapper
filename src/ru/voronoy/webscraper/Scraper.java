@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * Scrappes the web page
+ */
 public class Scraper {
 
     private final URL url;

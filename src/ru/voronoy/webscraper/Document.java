@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Represents web page document
+ */
 public class Document {
 
     private List<String> sentences = new ArrayList<>();
